@@ -1,0 +1,14 @@
+id = "emmylua"
+name = "EmmyLua"
+description = "Lua use emmylua language server ."
+version = "0.1.2"
+schema_version = 1
+authors = ["White Lee <lishjun01@126.com>"]
+
+[language_servers.emmylua]
+name = "emmylua_ls"
+language = "Lua"
+
+[grammars.lua]
+repository = "https://github.com/tree-sitter-grammars/tree-sitter-lua"
+commit = "a24dab177e58c9c6832f96b9a73102a0cfbced4a"
