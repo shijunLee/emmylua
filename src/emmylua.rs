@@ -13,8 +13,7 @@ impl EmmyLuaExtension {
         worktree: &zed::Worktree,
     ) -> Result<String> {
 
-        if let Some(path) = worktree.which("emmylua") {
-            println!("{}", path);
+        if let Some(path) = worktree.which("emmylua-analyzer-rust") {
             return Ok(path);
         }
 
@@ -60,7 +59,7 @@ impl EmmyLuaExtension {
         if platform == zed::Os::Linux && arch == zed::Architecture::Aarch64 {
             asset_name = format!( "emmylua_ls-{os}-{arch}.{extension}",os = "linux",arch = "aarch64-glibc.2.17",extension = "tar.gz");
         }
-         //https://github.com/CppCXY/emmylua-analyzer-rust/releases/download/0.5.2/emmylua_ls-darwin-arm64.tar.gz
+
         let asset = release
             .assets
             .iter()
@@ -69,7 +68,7 @@ impl EmmyLuaExtension {
 
         let version_dir = format!("emmylua-analyzer-rust-{}", release.version);
         let binary_path = format!(
-            "{version_dir}/bin/emmylua_ls{extension}",
+            "{version_dir}/emmylua_ls{extension}",
             extension = match platform {
                 zed::Os::Mac | zed::Os::Linux => "",
                 zed::Os::Windows => ".exe",
@@ -81,8 +80,7 @@ impl EmmyLuaExtension {
                 language_server_id,
                 &zed::LanguageServerInstallationStatus::Downloading,
             );
-            println!("Downloading {}", asset.download_url);
-
+            //https://github.com/CppCXY/emmylua-analyzer-rust/releases/download/0.5.2/emmylua_ls-darwin-arm64.tar.gz
             zed::download_file(
                 &asset.download_url,
                 &version_dir,
@@ -92,7 +90,7 @@ impl EmmyLuaExtension {
                 },
             )
             .map_err(|e| format!("failed to download file: {e}"))?;
-
+            zed::make_file_executable(&binary_path)?;
             let entries =
                 fs::read_dir(".").map_err(|e| format!("failed to list working directory {e}"))?;
             for entry in entries {
@@ -104,7 +102,6 @@ impl EmmyLuaExtension {
         }
 
         self.cached_binary_path = Some(binary_path.clone());
-        println!("binary_path {}", binary_path);
         Ok(binary_path)
     }
 }

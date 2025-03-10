@@ -1,14 +1,14 @@
 id = "emmylua"
 name = "EmmyLua"
 description = "Lua use emmylua language server ."
-version = "0.1.2"
+version = "0.0.1"
 schema_version = 1
 authors = ["White Lee <lishjun01@126.com>"]
 
-[language_servers.emmylua]
-name = "emmylua_ls"
-language = "Lua"
+[language_servers.emmylua-analyzer-rust]
+name = "emmylua-analyzer-rust"
+languages = ["EmmyLua","Lua"]
 
 [grammars.lua]
 repository = "https://github.com/tree-sitter-grammars/tree-sitter-lua"
-commit = "a24dab177e58c9c6832f96b9a73102a0cfbced4a"
+commit = "99fc677e6971c425e8d407f59c77ab897e585c92"
