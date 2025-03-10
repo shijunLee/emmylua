@@ -1,7 +1,9 @@
 use std::fs;
 use zed::lsp::CompletionKind;
 use zed::{CodeLabel, CodeLabelSpan, LanguageServerId};
-use zed_extension_api::{self as zed, Result};
+use zed_extension_api::{self as zed, serde_json, Result, settings::LspSettings, Worktree};
+use zed_extension_api::serde_json::json;
+
 struct EmmyLuaExtension {
     cached_binary_path: Option<String>,
 }
@@ -124,7 +126,17 @@ impl zed::Extension for EmmyLuaExtension {
             env: Default::default(),
         })
     }
-
+    fn language_server_initialization_options(
+        &mut self,
+        language_server_id: &LanguageServerId,
+        worktree: &zed::Worktree,
+    ) -> Result<Option<serde_json::Value>> {
+        let settings = LspSettings::for_worktree(language_server_id.as_ref(), worktree)
+            .ok()
+            .and_then(|lsp_settings| lsp_settings.initialization_options.clone())
+            .unwrap_or_default();
+        Ok(Some(settings))
+    }
     fn label_for_completion(
         &self,
         _language_server_id: &LanguageServerId,
