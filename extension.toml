@@ -4,7 +4,7 @@ description = "Lua use emmylua language server ."
 version = "0.0.1"
 schema_version = 1
 authors = ["White Lee <lishjun01@126.com>"]
-
+repository = "https://github.com/shijunLee/emmylua"
 [language_servers.emmylua-analyzer-rust]
 name = "emmylua-analyzer-rust"
 languages = ["EmmyLua","Lua"]
